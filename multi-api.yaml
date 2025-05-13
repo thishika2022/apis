@@ -1,0 +1,156 @@
+openapi: 3.0.1
+info:
+  title: Multi API Documentation
+  version: 1.0.0
+  description: |
+    This API includes endpoints for fetching housing spending, socialisation spending, 
+    and housing living weightage data for authenticated users using JWT tokens.
+
+servers:
+  - url: https://your-api-server.com  # Replace with your deployed backend URL
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []
+
+paths:
+
+  /api/housing-living-weightage/:
+    post:
+      summary: Get housing and socialisation spending data
+      description: |
+        Returns the first record from the database if available.
+        Responds with an error if something goes wrong or data is not found.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              example: {}
+      responses:
+        '200':
+          description: ✅ Success - Data found
+          content:
+            application/json:
+              example:
+                status: success
+                data:
+                  housingSpending: 4500.0
+                  socialisationSpending: 1200.0
+                  total_elements_sum: 15
+                error: null
+        '404':
+          description: ❌ Failure - No data found
+          content:
+            application/json:
+              example:
+                status: fail
+                data: null
+                error: "No housing_living_weightage record found."
+
+  /api/socialisation-spending/:
+    post:
+      summary: Fetch Socialisation Spending Data
+      description: |
+        Fetches socialisation spending data for the authenticated user based on today's date.
+        Requires JWT token in the Authorization header.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              example: {}
+      responses:
+        '200':
+          description: ✅ Success - Data found
+          content:
+            application/json:
+              example:
+                status: success
+                data:
+                  rawtowb_hides: 5
+                  rawtowb_skin: 10
+                  rawtoveg_hides: 2
+                  rawtoveg_skin: 3
+                  wbvegtofl_hides: 8
+                  wbvegtofl_skin: 12
+                  rawtofl_hide: 7
+                  rawtofl_skin: 14
+                error: null
+        '404':
+          description: ❌ Failure - No process record found for today
+          content:
+            application/json:
+              example:
+                status: fail
+                data: null
+                error: "No process record found for today"
+        '401':
+          description: ❌ Unauthorized - Token validation failed
+          content:
+            application/json:
+              example:
+                status: fail
+                data: null
+                error: "Token validation failed"
+
+  /api/housing-spending-pc/:
+    post:
+      summary: Fetch Housing Spending PC Data
+      description: |
+        Fetches housing spending process chain data for the authenticated user based on today's date.
+        Requires JWT token in the Authorization header.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              example: {}
+      responses:
+        '200':
+          description: ✅ Success - Data found
+          content:
+            application/json:
+              example:
+                status: success
+                data:
+                  rawtowb_hides: 5
+                  rawtowb_skin: 10
+                  rawtoveg_hides: 2
+                  rawtoveg_skin: 3
+                  wbvegtofl_hides: 8
+                  wbvegtofl_skin: 12
+                  rawtofl_hide: 7
+                  rawtofl_skin: 14
+                error: null
+        '404':
+          description: ❌ Failure - No process record found for today
+          content:
+            application/json:
+              example:
+                status: fail
+                data: null
+                error: "No process record found for today"
+        '401':
+          description: ❌ Unauthorized - Token validation failed
+          content:
+            application/json:
+              example:
+                status: fail
+                data: null
+                error: "Token validation failed"
